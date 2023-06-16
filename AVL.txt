@@ -1,0 +1,43 @@
+/*
+       Nó para a Árvore AVL
+*/
+ typedef struct no{
+     int valor;
+     struct no *esquerdo, *direito;
+     short altura;
+ }No;
+/*
+    x -> valor a ser inserido no nó
+    Retorna: o endereço do nó criado
+*/
+No* novoNo(int x){
+    No *novo = malloc(sizeof(No));
+
+    if(novo){
+        novo->valor = x;
+        novo->esquerdo = NULL;
+        novo->direito = NULL;
+        novo->altura = 0;
+    }
+    else
+        printf("\nERRO ao alocar nó em novoNo!\n");
+    return novo;
+}
+/*
+      Retorna a altura de um nó ou -1 caso ele seja null
+*/
+short alturaDoNo(No *no){
+    if(no == NULL)
+        return -1;
+    else
+        return no->altura;
+}
+/*
+      Calcula e retorna o fator de balanceamento de um nó
+*/
+short fatorDeBalanceamento(No *no){
+    if(no)
+        return (alturaDoNo(no->esquerdo) - alturaDoNo(no->direito));
+    else
+        return 0;
+}

@@ -1,0 +1,108 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+ 
+// Estrutura de dados para armazenar um nó de árvore binária
+struct Node
+{
+    int key;
+    Node *left, *right;
+ 
+    Node(int key)
+    {
+        this->key = key;
+        this->left = this->right = nullptr;
+    }
+};
+ 
+// Função iterativa para verificar se duas árvores binárias são idênticas ou não
+bool isIdentical(Node* x, Node* y)
+{
+    // se ambas as árvores estiverem vazias, retorna true
+    if (x == nullptr && y == nullptr) {
+        return true;
+    }
+ 
+    // se a primeira árvore estiver vazia (e a segunda árvore não estiver vazia), retornará false
+    if (x == nullptr) {
+        return false;
+    }
+ 
+    // se a segunda árvore estiver vazia (e a primeira não estiver vazia), retornará false
+    if (y == nullptr) {
+        return false;
+    }
+ 
+    // cria uma Stack para armazenar pares `Node*`
+    stack<pair<Node*, Node*>> stack;
+    stack.push({x, y});
+ 
+    // faz um loop até que a Stack esteja vazia
+    while (!stack.empty())
+    {
+        // retira o top pair da Stack e processa
+        Node* x = stack.top().first;
+        Node* y = stack.top().second;
+        stack.pop();
+ 
+        // se o valor do nó raiz não corresponder, retorna false
+        if (x->key != y->key) {
+            return false;
+        }
+ 
+        // se a subárvore esquerda de `x` e `y` existir, envia seus endereços
+        // stack; caso contrário, retorne false se existir apenas um filho à esquerda
+        if (x->left && y->left) {
+            stack.push({x->left, y->left});
+        }
+        else if (x->left || y->left) {
+            return false;
+        }
+ 
+        // se a subárvore direita de `x` e `y` existir, envia seus endereços
+        // stack; caso contrário, retorne false se existir apenas um filho certo
+        if (x->right && y->right) {
+            stack.push({x->right, y->right});
+        }
+        else if (x->right || y->right) {
+            return false;
+        }
+    }
+ 
+    // chegamos aqui se ambas as árvores binárias forem idênticas
+    return true;
+}
+ 
+int main()
+{
+    // constrói a primeira árvore
+    Node* x = nullptr;
+ 
+    x = new Node(15);
+    x->left = new Node(10);
+    x->right = new Node(20);
+    x->left->left = new Node(8);
+    x->left->right = new Node(12);
+    x->right->left = new Node(16);
+    x->right->right = new Node(25);
+ 
+    // constrói a segunda árvore
+    Node* y = nullptr;
+ 
+    y = new Node(15);
+    y->left = new Node(10);
+    y->right = new Node(20);
+    y->left->left = new Node(8);
+    y->left->right = new Node(12);
+    y->right->left = new Node(16);
+    y->right->right = new Node(25);
+ 
+    if (isIdentical(x, y)) {
+        cout << "y";
+    }
+    else {
+        cout << "vazia";
+    }
+ 
+    return 0;
+}
